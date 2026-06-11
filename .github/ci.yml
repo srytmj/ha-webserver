@@ -9,6 +9,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        app: [web1, web2]
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -17,23 +21,14 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 18
+          cache: 'npm'
 
-      - name: Install dependencies (web1)
+      - name: Install dependencies
         run: |
-          cd web1
-          npm install
+          cd ${{ matrix.app }}
+          npm ci
 
-      - name: Install dependencies (web2)
+      - name: Run tests
         run: |
-          cd web2
-          npm install
-
-      - name: Run tests (web1)
-        run: |
-          cd web1
-          npm test || echo "no test"
-
-      - name: Run tests (web2)
-        run: |
-          cd web2
-          npm test || echo "no test"
+          cd ${{ matrix.app }}
+          npm test
