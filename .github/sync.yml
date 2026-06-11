@@ -1,0 +1,35 @@
+name: Sync to web1 & web2
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Push to web1
+        run: |
+          git clone https://github.com/srytmj/ha-webserver-web1 web1-repo
+          rsync -av --delete web1/ web1-repo/
+          cd web1-repo
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add .
+          git commit -m "sync from main repo" || echo "no changes"
+          git push
+
+      - name: Push to web2
+        run: |
+          git clone https://github.com/srytmj/ha-webserver-web2 web2-repo
+          rsync -av --delete web2/ web2-repo/
+          cd web2-repo
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add .
+          git commit -m "sync from main repo" || echo "no changes"
+          git push

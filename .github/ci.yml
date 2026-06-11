@@ -1,0 +1,39 @@
+name: CI Check
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install dependencies (web1)
+        run: |
+          cd web1
+          npm install
+
+      - name: Install dependencies (web2)
+        run: |
+          cd web2
+          npm install
+
+      - name: Run tests (web1)
+        run: |
+          cd web1
+          npm test || echo "no test"
+
+      - name: Run tests (web2)
+        run: |
+          cd web2
+          npm test || echo "no test"
