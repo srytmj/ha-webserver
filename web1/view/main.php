@@ -79,6 +79,7 @@
         <?php if (SERVER_ID === '1'): ?>
         <a href="/index.php?action=create">➕ Tambah Data</a>
         <?php endif; ?>
+        <a href="/stress.php" style="background:#C0392B;">🔥 CPU Stress Test</a>
         <a href="/index.php?action=logout" class="btn-danger">🔓 Logout</a>
     </nav>
 </body>
