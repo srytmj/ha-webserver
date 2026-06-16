@@ -15,31 +15,48 @@ jobs:
       # ---------- WEB1 ----------
       - name: Sync to web1
         run: |
-          rm -rf web1-repo
-          git clone https://x-access-token:${{ secrets.GH_TOKEN }}@github.com/srytmj/ha-webserver-web1 web1-repo
+          # Clone ke folder temporary
+          git clone https://x-access-token:${{ secrets.GH_TOKEN }}@github.com/srytmj/ha-webserver-web1 temp-web1
           
-          rsync -av --delete web1/ web1-repo/
-
-          cd web1-repo
+          # Hapus semua file di root repo target (kecuali .git)
+          cd temp-web1
+          find . -maxdepth 1 ! -name '.' ! -name '.git' -exec rm -rf {} +
+          cd ..
+          
+          # Copy isi folder web1 ke root repo target
+          rsync -av --delete web1/ temp-web1/
+          
+          # Commit dan push
+          cd temp-web1
           git config user.name "github-actions"
           git config user.email "actions@github.com"
-
+          
           git add .
           git commit -m "sync from main repo - $(date -u '+%Y-%m-%d %H:%M:%S')" || echo "no changes"
           git push origin main
+          
+          # Bersihkan
+          cd ..
+          rm -rf temp-web1
 
       # ---------- WEB2 ----------
       - name: Sync to web2
         run: |
-          rm -rf web2-repo
-          git clone https://x-access-token:${{ secrets.GH_TOKEN }}@github.com/srytmj/ha-webserver-web2 web2-repo
+          git clone https://x-access-token:${{ secrets.GH_TOKEN }}@github.com/srytmj/ha-webserver-web2 temp-web2
           
-          rsync -av --delete web2/ web2-repo/
-
-          cd web2-repo
+          cd temp-web2
+          find . -maxdepth 1 ! -name '.' ! -name '.git' -exec rm -rf {} +
+          cd ..
+          
+          rsync -av --delete web2/ temp-web2/
+          
+          cd temp-web2
           git config user.name "github-actions"
-          git config user.email "actions@github.com"
-
+          git config.user.email "actions@github.com"
+          
           git add .
           git commit -m "sync from main repo - $(date -u '+%Y-%m-%d %H:%M:%S')" || echo "no changes"
           git push origin main
+          
+          cd ..
+          rm -rf temp-web2
