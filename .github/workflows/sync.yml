@@ -15,38 +15,38 @@ jobs:
       # ---------- WEB2 ----------
       - name: Sync to web2
         env:
-          MY_TOKEN: ${{ secrets.GH_TOKEN }}  # Pastikan nama secretnya sesuai
+          MY_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
-          # Clone dengan token
-          git clone https://x-access-token:${MY_TOKEN}@github.com/srytmj/ha-webserver-web2 temp-web2
+          rm -rf temp-web2
+          git clone https://srytmj:${MY_TOKEN}@github.com/srytmj/ha-webserver-web2 temp-web2
           
           cd temp-web2
-          # Bersihkan semua file kecuali .git
           find . -maxdepth 1 ! -name '.' ! -name '.git' -exec rm -rf {} +
           cd ..
           
-          # Sync file dari web2/
           rsync -av --delete web2/ temp-web2/
           
           cd temp-web2
-          git config user.name "github-actions[bot]"
-          git config user.email "[EMAIL_ADDRESS]"
+          # ✅ PAKAI IDENTITAS YANG SAMA DENGAN PEMILIK TOKEN
+          git config user.name "srytmj"
+          git config user.email "srytmj@users.noreply.github.com"
           
           git add .
           git commit -m "sync from main repo - $(date -u '+%Y-%m-%d %H:%M:%S')" || echo "no changes"
           
-          # Push dengan token
-          git push https://x-access-token:${MY_TOKEN}@github.com/srytmj/ha-webserver-web2 main
+          # ✅ PAKAI USERNAME YANG SAMA DI URL
+          git push https://srytmj:${MY_TOKEN}@github.com/srytmj/ha-webserver-web2 main
           
           cd ..
           rm -rf temp-web2
 
-      # ---------- WEB1 ----------
+      # ---------- WEB1 (SAMA PERSIS) ----------
       - name: Sync to web1
         env:
           MY_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
-          git clone https://x-access-token:${MY_TOKEN}@github.com/srytmj/ha-webserver-web1 temp-web1
+          rm -rf temp-web1
+          git clone https://srytmj:${MY_TOKEN}@github.com/srytmj/ha-webserver-web1 temp-web1
           
           cd temp-web1
           find . -maxdepth 1 ! -name '.' ! -name '.git' -exec rm -rf {} +
@@ -55,13 +55,15 @@ jobs:
           rsync -av --delete web1/ temp-web1/
           
           cd temp-web1
-          git config user.name "github-actions[bot]"
-          git config user.email "[EMAIL_ADDRESS]"
+          # ✅ PAKAI IDENTITAS YANG SAMA
+          git config user.name "srytmj"
+          git config user.email "srytmj@users.noreply.github.com"
           
           git add .
           git commit -m "sync from main repo - $(date -u '+%Y-%m-%d %H:%M:%S')" || echo "no changes"
           
-          git push https://x-access-token:${MY_TOKEN}@github.com/srytmj/ha-webserver-web1 main
+          # ✅ PAKAI USERNAME YANG SAMA
+          git push https://srytmj:${MY_TOKEN}@github.com/srytmj/ha-webserver-web1 main
           
           cd ..
           rm -rf temp-web1
