@@ -14,49 +14,32 @@ jobs:
 
       # ---------- WEB1 ----------
       - name: Sync to web1
-        env:
-          TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
-          echo "📁 Source web1 structure:"
-          ls -la web1/
+          rm -rf web1-repo
+          git clone https://x-access-token:${{ secrets.GH_TOKEN }}@github.com/srytmj/ha-webserver-web1 web1-repo
           
-          git clone https://x-access-token:${TOKEN}@github.com/srytmj/ha-webserver-web1 web1-repo
-          
-          echo "🔄 Syncing web1 folder (includes: config, controller, model, public, view)"
           rsync -av --delete web1/ web1-repo/
-          
+
           cd web1-repo
           git config user.name "github-actions"
           git config user.email "actions@github.com"
-          
-          echo "📊 Files to commit:"
-          git status
-          
-          git add .
-          git commit -m "sync from main repo - $(date -u '+%Y-%m-%d %H:%M:%S')" || echo "✅ No changes detected"
-          git push origin main
-          
-          echo "✅ web1 synced successfully"
 
-      # ---------- WEB2 (sama seperti web1) ----------
+          git add .
+          git commit -m "sync from main repo - $(date -u '+%Y-%m-%d %H:%M:%S')" || echo "no changes"
+          git push origin main
+
+      # ---------- WEB2 ----------
       - name: Sync to web2
-        env:
-          TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
-          echo "📁 Source web2 structure:"
-          ls -la web2/
+          rm -rf web2-repo
+          git clone https://x-access-token:${{ secrets.GH_TOKEN }}@github.com/srytmj/ha-webserver-web2 web2-repo
           
-          git clone https://x-access-token:${TOKEN}@github.com/srytmj/ha-webserver-web2 web2-repo
-          
-          echo "🔄 Syncing web2 folder"
           rsync -av --delete web2/ web2-repo/
-          
+
           cd web2-repo
           git config user.name "github-actions"
           git config user.email "actions@github.com"
-          
+
           git add .
-          git commit -m "sync from main repo - $(date -u '+%Y-%m-%d %H:%M:%S')" || echo "✅ No changes detected"
+          git commit -m "sync from main repo - $(date -u '+%Y-%m-%d %H:%M:%S')" || echo "no changes"
           git push origin main
-          
-          echo "✅ web2 synced successfully"
