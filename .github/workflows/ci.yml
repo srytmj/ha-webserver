@@ -21,12 +21,12 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 18
-          cache: 'npm'
+          # cache: 'npm'
 
       - name: Install dependencies
         run: |
           cd ${{ matrix.app }}
-          npm ci
+          npm install
 
       - name: Run tests
         run: |

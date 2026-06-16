@@ -53,7 +53,7 @@ jobs:
           
           cd web2-repo
           git config user.name "github-actions"
-          git config.user.email "actions@github.com"
+          git config user.email "actions@github.com"
           
           git add .
           git commit -m "sync from main repo - $(date -u '+%Y-%m-%d %H:%M:%S')" || echo "✅ No changes detected"
