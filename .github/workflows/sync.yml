@@ -29,8 +29,8 @@ jobs:
           rsync -av --delete web2/ temp-web2/
           
           cd temp-web2
-          git config user.name "github-actions"
-          git config user.email "actions@github.com"
+          git config user.name "github-actions[bot]"
+          git config user.email "[EMAIL_ADDRESS]"
           
           git add .
           git commit -m "sync from main repo - $(date -u '+%Y-%m-%d %H:%M:%S')" || echo "no changes"
@@ -55,8 +55,8 @@ jobs:
           rsync -av --delete web1/ temp-web1/
           
           cd temp-web1
-          git config user.name "github-actions"
-          git config user.email "actions@github.com"
+          git config user.name "github-actions[bot]"
+          git config user.email "[EMAIL_ADDRESS]"
           
           git add .
           git commit -m "sync from main repo - $(date -u '+%Y-%m-%d %H:%M:%S')" || echo "no changes"
