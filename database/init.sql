@@ -1,7 +1,7 @@
 -- ============================================================
 -- HA Web Server — Database Initialization Script
--- Jalankan di Aurora Master Endpoint:
--- mysql -h [AURORA_WRITER_ENDPOINT] -u admin -p < init.sql
+-- Jalankan dari EC2 Web1:
+-- mysql -h [RDS_ENDPOINT] -u admin -p < init.sql
 -- ============================================================
 
 CREATE DATABASE IF NOT EXISTS ha_webserver

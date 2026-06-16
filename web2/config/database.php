@@ -2,18 +2,18 @@
 // config/database.php — Web Instance 2 (Replica Node)
 // GANTI nilai di bawah sesuai konfigurasi AWS kamu
 
-define('DB_HOST',   'ha-rds-mysql.c85ckooeqpsp.us-east-1.rds.amazonaws.com'); // Writer Endpoint
+define('DB_HOST',   '[RDS_ENDPOINT]'); // RDS MySQL Endpoint (sama dengan Web1)
 define('DB_NAME',   'ha_webserver');
 define('DB_USER',   'admin');
-define('DB_PASS',   '12341234');
+define('DB_PASS',   '[PASSWORD_RDS]');
 define('DB_CHARSET','utf8mb4');
 
-define('SERVER_ID',    '1');
-define('SERVER_LABEL', 'Web Server 1 — Master Node');
+define('SERVER_ID',    '2');
+define('SERVER_LABEL', 'Web Server 2 — Replica Node');
 
-define('S3_BUCKET',   'demo-webserver-kelompok4');
+define('S3_BUCKET',   '[NAMA_BUCKET_S3]');
 define('S3_REGION',   'us-east-1');
-define('S3_BASE_URL', 'https://demo-webserver-kelompok4.s3.amazonaws.com/');
+define('S3_BASE_URL', 'https://[NAMA_BUCKET_S3].s3.us-east-1.amazonaws.com/');
 
 function getDBConnection(): PDO {
     try {
