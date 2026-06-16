@@ -17,18 +17,30 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Check if Node.js project
+        id: check
+        run: |
+          if [ -f "${{ matrix.app }}/package.json" ]; then
+            echo "has_node=true" >> $GITHUB_OUTPUT
+          else
+            echo "has_node=false" >> $GITHUB_OUTPUT
+          fi
+
       - name: Setup Node
         uses: actions/setup-node@v4
+        if: steps.check.outputs.has_node == 'true'
         with:
           node-version: 18
-          # cache: 'npm'
+          cache: 'npm'
 
       - name: Install dependencies
+        if: steps.check.outputs.has_node == 'true'
         run: |
           cd ${{ matrix.app }}
-          npm install
+          npm ci
 
       - name: Run tests
+        if: steps.check.outputs.has_node == 'true'
         run: |
           cd ${{ matrix.app }}
           npm test
