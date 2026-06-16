@@ -24,7 +24,7 @@ jobs:
           find . -maxdepth 1 ! -name '.' ! -name '.git' -exec rm -rf {} +
           cd ..
           
-          rsync -av --delete web2/ temp-web2/
+          rsync -av --delete --exclude='.git/' web2/ temp-web2/
           
           cd temp-web2
           # ✅ PAKAI IDENTITAS YANG SAMA DENGAN PEMILIK TOKEN
@@ -52,7 +52,7 @@ jobs:
           find . -maxdepth 1 ! -name '.' ! -name '.git' -exec rm -rf {} +
           cd ..
           
-          rsync -av --delete web1/ temp-web1/
+          rsync -av --delete --exclude='.git/' web1/ temp-web1/
           
           cd temp-web1
           # ✅ PAKAI IDENTITAS YANG SAMA
