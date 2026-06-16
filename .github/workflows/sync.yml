@@ -10,44 +10,20 @@ jobs:
 
     steps:
       - name: Checkout source repo
-        uses: actions/checkout@v3
-
-      # ---------- WEB1 ----------
-      - name: Sync to web1
-        run: |
-          # Clone ke folder temporary
-          git clone https://x-access-token:${{ secrets.GH_TOKEN }}@github.com/srytmj/ha-webserver-web1 temp-web1
-          
-          # Hapus semua file di root repo target (kecuali .git)
-          cd temp-web1
-          find . -maxdepth 1 ! -name '.' ! -name '.git' -exec rm -rf {} +
-          cd ..
-          
-          # Copy isi folder web1 ke root repo target
-          rsync -av --delete web1/ temp-web1/
-          
-          # Commit dan push
-          cd temp-web1
-          git config user.name "github-actions"
-          git config user.email "actions@github.com"
-          
-          git add .
-          git commit -m "sync from main repo - $(date -u '+%Y-%m-%d %H:%M:%S')" || echo "no changes"
-          git push origin main
-          
-          # Bersihkan
-          cd ..
-          rm -rf temp-web1
+        uses: actions/checkout@v4
 
       # ---------- WEB2 ----------
       - name: Sync to web2
         run: |
+          # Clone repo target dengan nama temporary
           git clone https://x-access-token:${{ secrets.GH_TOKEN }}@github.com/srytmj/ha-webserver-web2 temp-web2
           
           cd temp-web2
+          # Bersihkan semua file kecuali .git
           find . -maxdepth 1 ! -name '.' ! -name '.git' -exec rm -rf {} +
           cd ..
           
+          # Sync file dari web2/ ke root repo target
           rsync -av --delete web2/ temp-web2/
           
           cd temp-web2
@@ -56,7 +32,33 @@ jobs:
           
           git add .
           git commit -m "sync from main repo - $(date -u '+%Y-%m-%d %H:%M:%S')" || echo "no changes"
-          git push origin main
+          
+          # ✅ PASTIKAN PUSH KE REPO YANG BENAR
+          git push https://x-access-token:${{ secrets.GH_TOKEN }}@github.com/srytmj/ha-webserver-web2 main
           
           cd ..
           rm -rf temp-web2
+
+      # ---------- WEB1 ----------
+      - name: Sync to web1
+        run: |
+          git clone https://x-access-token:${{ secrets.GH_TOKEN }}@github.com/srytmj/ha-webserver-web1 temp-web1
+          
+          cd temp-web1
+          find . -maxdepth 1 ! -name '.' ! -name '.git' -exec rm -rf {} +
+          cd ..
+          
+          rsync -av --delete web1/ temp-web1/
+          
+          cd temp-web1
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          
+          git add .
+          git commit -m "sync from main repo - $(date -u '+%Y-%m-%d %H:%M:%S')" || echo "no changes"
+          
+          # ✅ PASTIKAN PUSH KE REPO YANG BENAR
+          git push https://x-access-token:${{ secrets.GH_TOKEN }}@github.com/srytmj/ha-webserver-web1 main
+          
+          cd ..
+          rm -rf temp-web1
