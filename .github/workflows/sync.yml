@@ -14,16 +14,18 @@ jobs:
 
       # ---------- WEB2 ----------
       - name: Sync to web2
+        env:
+          MY_TOKEN: ${{ secrets.GH_TOKEN }}  # Pastikan nama secretnya sesuai
         run: |
-          # Clone repo target dengan nama temporary
-          git clone https://x-access-token:${{ secrets.GH_TOKEN }}@github.com/srytmj/ha-webserver-web2 temp-web2
+          # Clone dengan token
+          git clone https://x-access-token:${MY_TOKEN}@github.com/srytmj/ha-webserver-web2 temp-web2
           
           cd temp-web2
           # Bersihkan semua file kecuali .git
           find . -maxdepth 1 ! -name '.' ! -name '.git' -exec rm -rf {} +
           cd ..
           
-          # Sync file dari web2/ ke root repo target
+          # Sync file dari web2/
           rsync -av --delete web2/ temp-web2/
           
           cd temp-web2
@@ -33,16 +35,18 @@ jobs:
           git add .
           git commit -m "sync from main repo - $(date -u '+%Y-%m-%d %H:%M:%S')" || echo "no changes"
           
-          # ✅ PASTIKAN PUSH KE REPO YANG BENAR
-          git push https://x-access-token:${{ secrets.GH_TOKEN }}@github.com/srytmj/ha-webserver-web2 main
+          # Push dengan token
+          git push https://x-access-token:${MY_TOKEN}@github.com/srytmj/ha-webserver-web2 main
           
           cd ..
           rm -rf temp-web2
 
       # ---------- WEB1 ----------
       - name: Sync to web1
+        env:
+          MY_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
-          git clone https://x-access-token:${{ secrets.GH_TOKEN }}@github.com/srytmj/ha-webserver-web1 temp-web1
+          git clone https://x-access-token:${MY_TOKEN}@github.com/srytmj/ha-webserver-web1 temp-web1
           
           cd temp-web1
           find . -maxdepth 1 ! -name '.' ! -name '.git' -exec rm -rf {} +
@@ -57,8 +61,7 @@ jobs:
           git add .
           git commit -m "sync from main repo - $(date -u '+%Y-%m-%d %H:%M:%S')" || echo "no changes"
           
-          # ✅ PASTIKAN PUSH KE REPO YANG BENAR
-          git push https://x-access-token:${{ secrets.GH_TOKEN }}@github.com/srytmj/ha-webserver-web1 main
+          git push https://x-access-token:${MY_TOKEN}@github.com/srytmj/ha-webserver-web1 main
           
           cd ..
           rm -rf temp-web1
