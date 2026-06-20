@@ -2,8 +2,6 @@
 
 Implementasi High Availability Web Server di Amazon Web Services menggunakan dua EC2 instance, RDS MySQL, S3, dan Application Load Balancer.
 
-Arsitektur ini dikembangkan sebagai tugas besar mata kuliah Cloud Computing, Universitas Telkom 2026.
-
 ## Arsitektur
 
 ```mermaid
