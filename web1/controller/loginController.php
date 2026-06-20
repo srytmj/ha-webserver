@@ -1,6 +1,6 @@
 <?php
 // controller/loginController.php — Web1 & Web2
-session_start();
+if (session_status() === PHP_SESSION_NONE) session_start();
 
 define('ADMIN_USER', 'admin');
 define('ADMIN_PASS', 'password123');

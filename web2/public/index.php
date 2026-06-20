@@ -2,7 +2,7 @@
 // public/index.php — Front Controller / Router (Web2 — Read Only)
 // File create.php, update.php, delete TIDAK tersedia di Web2
 
-session_start();
+if (session_status() === PHP_SESSION_NONE) session_start();
 
 require_once __DIR__ . '/../config/database.php';
 require_once __DIR__ . '/../controller/loginController.php';

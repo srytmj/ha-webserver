@@ -1,6 +1,6 @@
 <?php
 // public/index.php — Front Controller (Web1)
-session_start();
+if (session_status() === PHP_SESSION_NONE) session_start();
 
 require_once __DIR__ . '/../config/database.php';
 require_once __DIR__ . '/../controller/loginController.php';

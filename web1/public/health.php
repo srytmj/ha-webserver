@@ -8,10 +8,12 @@ try {
     $pdo->query('SELECT 1');
     http_response_code(200);
     echo json_encode([
-        'status'    => 'healthy',
-        'server_id' => SERVER_ID,
-        'db'        => 'connected',
-        'timestamp' => date('Y-m-d H:i:s'),
+        'status'         => 'healthy',
+        'server_id'      => SERVER_ID,
+        'db'             => 'connected',
+        'db_active_node' => defined('DB_ACTIVE_NODE') ? DB_ACTIVE_NODE : 'unknown',
+        'db_readonly'    => defined('DB_READONLY') ? DB_READONLY : null,
+        'timestamp'      => date('Y-m-d H:i:s'),
     ]);
 } catch (Exception $e) {
     http_response_code(500);

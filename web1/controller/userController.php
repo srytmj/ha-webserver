@@ -37,6 +37,7 @@ function handleCreate(): void {
     }
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        assertWritable(); // tolak tulis saat aktif di fallback RDS (read-only)
         $nama = trim($_POST['nama'] ?? '');
         $nim  = trim($_POST['nim']  ?? '');
 
@@ -72,6 +73,7 @@ function handleUpdate(): void {
     $model = new User();
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        assertWritable(); // tolak tulis saat aktif di fallback RDS (read-only)
         $nama    = trim($_POST['nama'] ?? '');
         $nim     = trim($_POST['nim']  ?? '');
         $fotoUrl = null;
@@ -102,6 +104,7 @@ function handleDelete(): void {
     if (!isset($_SESSION['logged_in'])) {
         header('Location: /index.php?action=login'); exit;
     }
+    assertWritable(); // tolak tulis saat aktif di fallback RDS (read-only)
     $id    = (int) ($_GET['id'] ?? 0);
     $model = new User();
     $model->delete($id);

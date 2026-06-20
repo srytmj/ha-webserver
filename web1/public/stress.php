@@ -1,7 +1,7 @@
 <?php
 // public/stress.php — CPU Stress Test untuk CloudWatch Alarm Testing
 require_once __DIR__ . '/../config/database.php';
-session_start();
+if (session_status() === PHP_SESSION_NONE) session_start();
 
 $duration = min((int)($_POST['duration'] ?? 10), 60); // maks 60 detik
 $result   = null;
